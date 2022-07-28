@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  simple-app:
+    #    platform: linux/amd64
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: simple
+    entrypoint: ["/app/wait-for.sh", "db:5432", "--", "/app/start.sh"]
+    command: ["/app/simple"]
+    ports:
+      - "8001:8000"
+    depends_on:
+      - db
+    environment:
+      - APP_ENV=dev-docker
+      - DB_SOURCE=postgres://postgres:qwerty@db:5432/simple?sslmode=disable
+    env_file:
+      - .env
+  db:
+    restart: always
+    image: postgres:13.7
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=simple
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=qwerty
+    ports:
+      - "5433:5432"
+volumes:
+  db-data:
