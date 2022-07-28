@@ -9,6 +9,6 @@ require (
 	github.com/joho/godotenv v1.4.0
 	github.com/sirupsen/logrus v1.6.0
 	github.com/spf13/viper v1.12.0
-	github.com/swaggo/files v0.0.0-20220610200504-28940afbdbfe
-	github.com/swaggo/gin-swagger v1.5.1
+	github.com/stretchr/testify v1.8.0 // indirect
+	golang.org/x/crypto v0.0.0-20220411220226-7b82a4e95df4
 )
