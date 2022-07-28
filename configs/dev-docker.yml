@@ -1,0 +1,10 @@
+http:
+  port: 8000
+  maxHeaderMegaBytes: 1
+  readTimeout: 10s
+  writeTimeout: 10s
+postgres:
+  host: "db"
+  port: "5432"
+  dbname: "simple_app"
+  sslmode: "disable"
