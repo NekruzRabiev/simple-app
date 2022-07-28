@@ -16,10 +16,12 @@ type Services struct {
 	RefreshSession RefreshSession
 }
 
-func NewServices(user User, refreshSessions RefreshSession) *Services {
+func NewServices(deps Deps) *Services {
+	refreshSession := newRefreshSessionService(deps.Repos.RefreshSession, deps.JwtManager, deps.AccessTokenTTL, deps.RefreshTokenTTL)
+	user := newUserService(deps.Repos.User, deps.RndGen, refreshSession)
 	return &Services{
+		RefreshSession: refreshSession,
 		User:           user,
-		RefreshSession: refreshSessions,
 	}
 }
 

@@ -8,14 +8,16 @@ import (
 )
 
 type userService struct {
-	repo repository.User
-	rndGen rnd.Generator
+	repo              repository.User
+	rndGen            rnd.Generator
+	refSessionService RefreshSession
 }
 
-func newUserService(repo repository.User, rndGen rnd.Generator) *userService {
+func newUserService(repo repository.User, rndGen rnd.Generator, refSessionService RefreshSession) *userService {
 	return &userService{
-		repo: repo,
-		rndGen: rndGen,
+		repo:              repo,
+		rndGen:            rndGen,
+		refSessionService: refSessionService,
 	}
 }
 
@@ -23,7 +25,6 @@ func (s *userService) Create(ctx context.Context, user domain.User) (int, error)
 
 }
 
-func (s *userService) SignIn (ctx context.Context, email string, password string) (UserSignInInfo, error) {
+func (s *userService) SignIn(ctx context.Context, email string, password string) (UserSignInInfo, error) {
 
 }
-
