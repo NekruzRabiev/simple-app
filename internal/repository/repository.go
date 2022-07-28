@@ -3,6 +3,7 @@ package repository
 import (
 	"context"
 	"github.com/nekruzrabiev/simple-app/internal/domain"
+	"github.com/nekruzrabiev/simple-app/internal/service"
 	"time"
 )
 
@@ -31,12 +32,6 @@ type Transactor interface {
 	WithinTransaction(context.Context, func(ctx context.Context) error) error
 }
 
-//User
-type UpdateUserInput struct {
-	Id   int
-	Name string
-}
-
 //Refresh Session
 type RefreshSession interface {
 	Create(ctx context.Context, refreshSession domain.RefreshSession) error
@@ -44,8 +39,9 @@ type RefreshSession interface {
 }
 
 type User interface {
-	Create(ctx context.Context, phone string) (int, error)
-	Update(ctx context.Context, input UpdateUserInput) error
-	Get(ctx context.Context, userId int) (domain.User, error)
-	Delete(ctx context.Context, userId int) error
+	Create(ctx context.Context, user domain.User) (int, error)
+	UpdateName(ctx context.Context, input service.UserUpdateInput) error
+	Get(ctx context.Context, userId int) (*domain.User, error)
+	Contains(ctx context.Context, email string) (bool, error)
+	GetByEmail(ctx context.Context, email string) (*domain.User, error)
 }

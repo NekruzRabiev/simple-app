@@ -55,7 +55,11 @@ func (h *Handler) userUpdateName(c *gin.Context) {
 		return
 	}
 
-	if err = h.services.User.UpdateName(c.Request.Context(), id, req.Name); err != nil {
+	err = h.services.User.UpdateName(c.Request.Context(), service.UserUpdateInput{
+		Id:   id,
+		Name: req.Name,
+	})
+	if err != nil {
 		newResponse(c, http.StatusInternalServerError, ErrInternalServer, err)
 		return
 	}
@@ -69,9 +73,8 @@ type userSignInRequest struct {
 }
 
 type signInResponse struct {
-	AccessToken  string `json:"accessToken"`
-	RefreshToken string `json:"refreshToken"`
-	IsUserExist  bool   `json:"isUserExist"`
+	AccessToken  string `json:"access_token"`
+	RefreshToken string `json:"refresh_token"`
 }
 
 func (h *Handler) userSignIn(c *gin.Context) {
@@ -97,7 +100,6 @@ func (h *Handler) userSignIn(c *gin.Context) {
 	c.JSON(http.StatusOK, signInResponse{
 		AccessToken:  signInInfo.AccessToken,
 		RefreshToken: signInInfo.RefreshToken,
-		IsUserExist:  signInInfo.IsUserExist,
 	})
 }
 
@@ -136,12 +138,12 @@ func (h *Handler) userCreate(c *gin.Context) {
 }
 
 type userRefreshRequest struct {
-	RefreshToken string `json:"refreshToken" binding:"required"`
+	RefreshToken string `json:"refresh_token" binding:"required"`
 }
 
 type userRefreshResponse struct {
-	AccessToken  string `json:"accessToken"`
-	RefreshToken string `json:"refreshToken"`
+	AccessToken  string `json:"access_token"`
+	RefreshToken string `json:"refresh_token"`
 }
 
 func (h *Handler) userRefresh(c *gin.Context) {

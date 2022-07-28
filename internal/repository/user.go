@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/nekruzrabiev/simple-app/internal/domain"
+	"github.com/nekruzrabiev/simple-app/internal/service"
 )
 
 type userPostgres struct {
@@ -15,25 +16,94 @@ func newUserPostgres(db *store) *userPostgres {
 }
 
 const createUserSql = `
-	INSERT INTO %s (full_name, phone)
-	VALUES ('', $1)
-	RETURNING ID;
+	INSERT INTO %s (full_name, email, password)
+	VALUES ($1, $2, $2)
+	RETURNING id;
 `
 
-func (r *userPostgres) Create(ctx context.Context, phone string) (int, error) {
+func (r *userPostgres) Create(ctx context.Context, user domain.User) (int, error) {
 	var id int
 	createUserQuery := fmt.Sprintf(createUserSql, userTable)
-	err := r.db.GetContext(ctx, &id, createUserQuery, phone)
+	err := r.db.GetContext(ctx, &id, createUserQuery, user.FullName, user.Email, user.Password)
 
 	return id, err
 }
 
-func (r *userPostgres) Update(ctx context.Context, input UpdateUserInput) error {
-	return nil
+const updateUserFullNameSql = `
+	UPDATE %s
+	SET
+		full_name = $1
+	WHERE
+		id = $2;
+`
+
+func (r *userPostgres) UpdateName(ctx context.Context, input service.UserUpdateInput) error {
+	query := fmt.Sprintf(updateUserFullNameSql, userTable)
+	_, err := r.db.ExecContext(ctx, query, input.Name, input.Id)
+	return err
 }
-func (r *userPostgres) Get(ctx context.Context, userId int) (domain.User, error) {
-	return domain.User{}, nil
+
+const getUserByIdSql = `
+	SELECT
+		u.id,
+		u.full_name,
+		u.email
+	FROM
+		%s AS u
+	WHERE
+		u.id = $1
+	LIMIT
+		1;
+`
+
+func (r *userPostgres) Get(ctx context.Context, userId int) (*domain.User, error) {
+	query := fmt.Sprintf(getUserByEmailSql, userTable)
+
+	user := new(domain.User)
+
+	err := r.db.GetContext(ctx, user, query, userId)
+	return user, err
 }
-func (r *userPostgres) Delete(ctx context.Context, userId int) error {
-	return nil
+
+const containsUserSql = `
+	SELECT
+		EXISTS (
+			SELECT
+				u.id
+			FROM
+				%s AS u
+			WHERE
+				u.email = $1
+			LIMIT
+				1
+		);
+`
+
+func (r *userPostgres) Contains(ctx context.Context, email string) (bool, error) {
+	query := fmt.Sprintf(containsUserSql, userTable)
+
+	var contains bool
+
+	err := r.db.GetContext(ctx, &contains, query, email)
+	return contains, err
+}
+
+const getUserByEmailSql = `
+	SELECT
+		u.id,
+		u.password
+	FROM
+		%s AS u
+	WHERE
+		u.email = $1
+	LIMIT
+		1;
+`
+
+func (r *userPostgres) GetByEmail(ctx context.Context, email string) (*domain.User, error) {
+	query := fmt.Sprintf(getUserByEmailSql, userTable)
+
+	user := new(domain.User)
+	err := r.db.GetContext(ctx, user, query, email)
+	return user, err
 }

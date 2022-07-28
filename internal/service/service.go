@@ -18,7 +18,7 @@ type Services struct {
 
 func NewServices(deps Deps) *Services {
 	refreshSession := newRefreshSessionService(deps.Repos.RefreshSession, deps.JwtManager, deps.AccessTokenTTL, deps.RefreshTokenTTL)
-	user := newUserService(deps.Repos.User, deps.RndGen, refreshSession)
+	user := newUserService(deps.Repos.User, deps.RndGen, refreshSession, deps.ReValidPassword, deps.Repos.Transactor)
 	return &Services{
 		RefreshSession: refreshSession,
 		User:           user,
@@ -38,7 +38,6 @@ type Deps struct {
 type UserSignInInfo struct {
 	AccessToken  string
 	RefreshToken string
-	IsUserExist  bool
 }
 
 type Tokens struct {
@@ -65,8 +64,8 @@ type UserGetInput struct {
 type User interface {
 	Create(ctx context.Context, staff domain.User) (int, error)
 	SignIn(ctx context.Context, input UserSignInInput) (UserSignInInfo, error)
-	UpdateName(ctx context.Context, id int, name string) error
-	Get(ctx context.Context, id int) (domain.User, error)
+	UpdateName(ctx context.Context, input UserUpdateInput) error
+	Get(ctx context.Context, id int) (*domain.User, error)
 }
 
 //Refresh tokens sessions
