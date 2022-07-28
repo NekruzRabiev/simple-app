@@ -28,7 +28,6 @@ func NewServices(deps Deps) *Services {
 //Dependencies we need to inject to the service
 type Deps struct {
 	Repos           *repository.Repositories
-	ReValidEmail    *regexp.Regexp
 	ReValidPassword *regexp.Regexp
 	JwtManager      jwt.TokenManager
 	RndGen          rnd.Generator
@@ -52,6 +51,11 @@ type UserUpdateInput struct {
 	Name string
 }
 
+type UserSignInInput struct {
+	Email    string
+	Password string
+}
+
 type UserGetInput struct {
 	Id   int
 	Name string
@@ -60,7 +64,9 @@ type UserGetInput struct {
 // User service
 type User interface {
 	Create(ctx context.Context, staff domain.User) (int, error)
-	SignIn(ctx context.Context, email string, password string) (UserSignInInfo, error)
+	SignIn(ctx context.Context, input UserSignInInput) (UserSignInInfo, error)
+	UpdateName(ctx context.Context, id int, name string) error
+	Get(ctx context.Context, id int) (domain.User, error)
 }
 
 //Refresh tokens sessions

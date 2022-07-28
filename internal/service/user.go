@@ -25,6 +25,14 @@ func (s *userService) Create(ctx context.Context, user domain.User) (int, error)
 
 }
 
-func (s *userService) SignIn(ctx context.Context, email string, password string) (UserSignInInfo, error) {
+func (s *userService) SignIn(ctx context.Context, input UserSignInInput) (UserSignInInfo, error) {
+
+}
+
+func (s *userService) UpdateName(ctx context.Context, id int, name string) error {
+	return nil
+}
+
+func (s *userService) Get(ctx context.Context, id int) (domain.User, error) {
 
 }

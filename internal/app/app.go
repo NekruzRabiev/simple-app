@@ -57,12 +57,10 @@ func Run(configPath string) {
 		return
 	}
 
-	reValidEmailNumber := regexp.MustCompile(`^(\+992)(\d{9}$)`)
 	reValidPassword := regexp.MustCompile(`^(([a-zA-ZА-Яа-я]+\d+)|(\d+[a-zA-ZА-Яа-я]+))[a-zA-zА-Яа-я\d]*$`)
 
 	//TODO: change AccessTokenTTL and RefreshTokenTTL later
 	deps := service.Deps{
-		ReValidEmail:    reValidEmailNumber,
 		ReValidPassword: reValidPassword,
 		Repos:           repos,
 		JwtManager:      jwtManager,
