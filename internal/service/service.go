@@ -12,8 +12,15 @@ import (
 
 //ALL services
 type Services struct {
-	User            User
-	RefreshSessions RefreshSessions
+	User           User
+	RefreshSession RefreshSession
+}
+
+func NewServices(user User, refreshSessions RefreshSession) *Services {
+	return &Services{
+		User:           user,
+		RefreshSession: refreshSessions,
+	}
 }
 
 //Dependencies we need to inject to the service
@@ -55,7 +62,7 @@ type User interface {
 }
 
 //Refresh tokens sessions
-type RefreshSessions interface {
+type RefreshSession interface {
 	Create(ctx context.Context, userId int) (Tokens, error)
 	Update(ctx context.Context, refreshToken string) (Tokens, error)
 }

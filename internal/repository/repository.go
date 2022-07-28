@@ -3,17 +3,20 @@ package repository
 import (
 	"context"
 	"github.com/nekruzrabiev/simple-app/internal/domain"
+	"time"
 )
 
 type Repositories struct {
-	Transactor Transactor
-	Users      Users
+	Transactor     Transactor
+	User           User
+	RefreshSession RefreshSession
 }
 
 func NewRepositories(db *store) *Repositories {
 	return &Repositories{
-		Transactor: newTransactorPostgres(db),
-		Users:      newUserPostgres(db),
+		Transactor:     newTransactorPostgres(db),
+		User:           newUserPostgres(db),
+		RefreshSession: newRefreshSessionPostgres(db),
 	}
 }
 
@@ -28,14 +31,19 @@ type Transactor interface {
 	WithinTransaction(context.Context, func(ctx context.Context) error) error
 }
 
-//Users
+//User
 type UpdateUserInput struct {
-	Id         int
-	Name       string
-	PushNotify bool
+	Id   int
+	Name string
 }
 
-type Users interface {
+//Refresh Session
+type RefreshSession interface {
+	Create(ctx context.Context, refreshSession domain.RefreshSession) error
+	GetByToken(ctx context.Context, token string, expireAfter time.Time) (domain.RefreshSession, error)
+}
+
+type User interface {
 	Create(ctx context.Context, phone string) (int, error)
 	Update(ctx context.Context, input UpdateUserInput) error
 	Get(ctx context.Context, userId int) (domain.User, error)
