@@ -12,6 +12,7 @@ const (
 	authorizationHeader = "Authorization"
 	userCtx             = "userId"
 )
+
 func (h *Handler) userIdentity(c *gin.Context) {
 	id, err := h.parseAuthHeader(c)
 	if err != nil {
