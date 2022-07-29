@@ -22,6 +22,17 @@ func (h *Handler) initUserRoutes(api *gin.RouterGroup) {
 	}
 }
 
+// @Summary userGet
+// @Security UsersAuth
+// @Tags users
+// @Description Get user's data
+// @ID get-user
+// @Produce  json
+// @Success 200 {object} domain.User
+// @Failure 400,404,401 {object} errResponse
+// @Failure 500 {object} errResponse
+// @Failure default {object} errResponse
+// @Router /api/v1/user [get]
 func (h *Handler) userGet(c *gin.Context) {
 	id, err := getUserId(c)
 	if err != nil {
@@ -42,6 +53,18 @@ type userUpdateRequest struct {
 	Name string `json:"name" binding:"required"`
 }
 
+// @Summary userUpdateName
+// @Security UsersAuth
+// @Tags users
+// @Description Update user's name
+// @ID user-update-name
+// @Accept  json
+// @Param input body userUpdateRequest true "Name for updating"
+// @Success 200
+// @Failure 400,404,401 {object} errResponse
+// @Failure 500 {object} errResponse
+// @Failure default {object} errResponse
+// @Router /api/v1/user [patch]
 func (h *Handler) userUpdateName(c *gin.Context) {
 	var req userUpdateRequest
 	if err := c.BindJSON(&req); err != nil {
@@ -77,6 +100,18 @@ type signInResponse struct {
 	RefreshToken string `json:"refresh_token"`
 }
 
+// @Summary SignIn
+// @Tags users
+// @Description Sign in
+// @ID sign-in
+// @Accept  json
+// @Produce  json
+// @Param input body userSignInRequest true "account info"
+// @Success 200 {object} signInResponse
+// @Failure 400,404 {object} errResponse
+// @Failure 500 {object} errResponse
+// @Failure default {object} errResponse
+// @Router /api/v1/user/sign-in [post]
 func (h *Handler) userSignIn(c *gin.Context) {
 	var req userSignInRequest
 	if err := c.BindJSON(&req); err != nil {
@@ -109,6 +144,18 @@ type userCreateRequest struct {
 	Password string `json:"password" binding:"required"`
 }
 
+// @Summary userCreate
+// @Tags users
+// @Description Create new user
+// @ID create-user
+// @Accept  json
+// @Produce  json
+// @Param input body userCreateRequest true "user's info"
+// @Success 200 integer id "returns id"
+// @Failure 400,404 {object} errResponse
+// @Failure 500 {object} errResponse
+// @Failure default {object} errResponse
+// @Router /api/v1/user [post]
 func (h *Handler) userCreate(c *gin.Context) {
 	var req userCreateRequest
 	if err := c.BindJSON(&req); err != nil {
@@ -146,6 +193,18 @@ type userRefreshResponse struct {
 	RefreshToken string `json:"refresh_token"`
 }
 
+// @Summary userRefresh
+// @Tags users
+// @Description Refresh user's tokens
+// @ID refresh-user
+// @Accept  json
+// @Produce  json
+// @Param input body userRefreshRequest true "refresh token"
+// @Success 200 {object} userRefreshResponse
+// @Failure 400,404 {object} errResponse
+// @Failure 500 {object} errResponse
+// @Failure default {object} errResponse
+// @Router /api/v1/user/refresh [post]
 func (h *Handler) userRefresh(c *gin.Context) {
 	var req userRefreshRequest
 	if err := c.BindJSON(&req); err != nil {

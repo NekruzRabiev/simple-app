@@ -11,4 +11,4 @@ swag:
 build:
 	docker-compose build simple-app
 run:
-	docker-compose up simple-app
+	docker-compose up -d simple-app

@@ -1,0 +1,274 @@
+basePath: /
+definitions:
+  domain.User:
+    properties:
+      email:
+        type: string
+      fullName:
+        type: string
+      id:
+        type: integer
+    type: object
+  v1.errResponse:
+    properties:
+      code:
+        type: integer
+      message:
+        type: string
+    type: object
+  v1.signInResponse:
+    properties:
+      access_token:
+        type: string
+      refresh_token:
+        type: string
+    type: object
+  v1.userCreateRequest:
+    properties:
+      email:
+        type: string
+      name:
+        type: string
+      password:
+        type: string
+    required:
+    - email
+    - name
+    - password
+    type: object
+  v1.userRefreshRequest:
+    properties:
+      refresh_token:
+        type: string
+    required:
+    - refresh_token
+    type: object
+  v1.userRefreshResponse:
+    properties:
+      access_token:
+        type: string
+      refresh_token:
+        type: string
+    type: object
+  v1.userSignInRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  v1.userUpdateRequest:
+    properties:
+      name:
+        type: string
+    required:
+    - name
+    type: object
+host: localhost:8000
+info:
+  contact: {}
+  description: API Server for simple-app
+  title: Simple App API
+  version: "1.0"
+paths:
+  /api/v1/user:
+    get:
+      description: Get user's data
+      operationId: get-user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.User'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/v1.errResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/v1.errResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/v1.errResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/v1.errResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/v1.errResponse'
+      security:
+      - UsersAuth: []
+      summary: userGet
+      tags:
+      - users
+    patch:
+      consumes:
+      - application/json
+      description: Update user's name
+      operationId: user-update-name
+      parameters:
+      - description: Name for updating
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/v1.userUpdateRequest'
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/v1.errResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/v1.errResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/v1.errResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/v1.errResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/v1.errResponse'
+      security:
+      - UsersAuth: []
+      summary: userUpdateName
+      tags:
+      - users
+    post:
+      consumes:
+      - application/json
+      description: Create new user
+      operationId: create-user
+      parameters:
+      - description: user's info
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/v1.userCreateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: returns id
+          schema:
+            type: integer
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/v1.errResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/v1.errResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/v1.errResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/v1.errResponse'
+      summary: userCreate
+      tags:
+      - users
+  /api/v1/user/refresh:
+    post:
+      consumes:
+      - application/json
+      description: Refresh user's tokens
+      operationId: refresh-user
+      parameters:
+      - description: refresh token
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/v1.userRefreshRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/v1.userRefreshResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/v1.errResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/v1.errResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/v1.errResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/v1.errResponse'
+      summary: userRefresh
+      tags:
+      - users
+  /api/v1/user/sign-in:
+    post:
+      consumes:
+      - application/json
+      description: Sign in
+      operationId: sign-in
+      parameters:
+      - description: account info
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/v1.userSignInRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/v1.signInResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/v1.errResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/v1.errResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/v1.errResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/v1.errResponse'
+      summary: SignIn
+      tags:
+      - users
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

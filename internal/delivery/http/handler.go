@@ -2,12 +2,12 @@ package http
 
 import (
 	"github.com/gin-gonic/gin"
-	//_ "github.com/nekruzrabiev/simple-app/docs"
+	_ "github.com/nekruzrabiev/simple-app/docs"
 	v1 "github.com/nekruzrabiev/simple-app/internal/delivery/http/v1"
 	"github.com/nekruzrabiev/simple-app/internal/service"
 	"github.com/nekruzrabiev/simple-app/pkg/jwt"
-	//"github.com/swaggo/files"       // swagger embed files
-	//"github.com/swaggo/gin-swagger" // gin-swagger middleware
+	"github.com/swaggo/files"       // swagger embed files
+	"github.com/swaggo/gin-swagger" // gin-swagger middleware
 	"net/http"
 )
 
@@ -30,7 +30,7 @@ func (h *Handler) Init() *gin.Engine {
 		gin.Logger(),
 		corsMiddleware,
 	)
-	//router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	router.GET("/ping", func(c *gin.Context) {
 		c.String(http.StatusOK, "pong")
