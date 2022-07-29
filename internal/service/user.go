@@ -52,6 +52,7 @@ func (s *userService) Create(ctx context.Context, user domain.User) (int, error)
 			return err
 		}
 
+		// create new user
 		id, err = s.repo.Create(ctx, user)
 		return err
 	})

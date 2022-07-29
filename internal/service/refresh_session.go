@@ -11,7 +11,6 @@ import (
 
 type refreshSessionService struct {
 	repo repository.RefreshSession
-
 	jwtManager      jwt.TokenManager
 	accessTokenTTL  time.Duration
 	refreshTokenTTL time.Duration
@@ -50,6 +49,7 @@ func (s *refreshSessionService) Create(ctx context.Context, userId int) (Tokens,
 		UserId:    userId,
 	}
 
+	// save user's session in DB
 	err = s.repo.Create(ctx, session)
 
 	return res, err

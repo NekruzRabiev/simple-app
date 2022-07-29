@@ -170,7 +170,7 @@ func (h *Handler) userCreate(c *gin.Context) {
 	})
 	if err != nil {
 		if errors.Is(err, service.ErrInvalidPassword) {
-			newResponse(c, http.StatusInternalServerError, ErrNotContainsDigitAndLetters, err)
+			newResponse(c, http.StatusBadRequest, ErrNotContainsDigitAndLetters, err)
 			return
 		}
 		if errors.Is(err, service.ErrUserExists) {

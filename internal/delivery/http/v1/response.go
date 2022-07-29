@@ -24,7 +24,7 @@ var (
 	ErrInternalServer             = newErrResponse("упс, что-то пошло не так", http.StatusInternalServerError)
 	ErrUserExists                 = newErrResponse("пользователь уже существует", http.StatusConflict)
 	ErrBadEmailOrPassword         = newErrResponse("некорректный логин или пароль", http.StatusForbidden)
-	ErrNotContainsDigitAndLetters = newErrResponse("пароль должен содержать цифры и буквы", http.StatusForbidden)
+	ErrNotContainsDigitAndLetters = newErrResponse("пароль должен содержать цифры и буквы", http.StatusBadRequest)
 )
 
 func newResponse(c *gin.Context, statusCode int, resp *errResponse, err error) {
