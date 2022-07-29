@@ -6,5 +6,5 @@ http:
 postgres:
   host: "db"
   port: "5432"
-  dbname: "simple_app"
+  dbname: "simple"
   sslmode: "disable"
