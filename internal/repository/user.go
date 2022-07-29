@@ -16,7 +16,7 @@ func newUserPostgres(db *store) *userPostgres {
 
 const createUserSql = `
 	INSERT INTO %s (full_name, email, password)
-	VALUES ($1, $2, $2)
+	VALUES ($1, $2, $3)
 	RETURNING id;
 `
 
@@ -56,7 +56,7 @@ const getUserByIdSql = `
 `
 
 func (r *userPostgres) Get(ctx context.Context, userId int) (*domain.User, error) {
-	query := fmt.Sprintf(getUserByEmailSql, userTable)
+	query := fmt.Sprintf(getUserByIdSql, userTable)
 
 	user := new(domain.User)
 
