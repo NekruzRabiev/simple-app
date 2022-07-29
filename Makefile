@@ -8,3 +8,7 @@ dmigrate:
 	migrate -path ./internal/migrations -database "postgres://postgres:qwerty@0.0.0.0:5433/simple?sslmode=disable" down 1
 swag:
 	swag init -g ./cmd/app/main.go
+build:
+	docker-compose build simple-app
+run:
+	docker-compose up simple-app
