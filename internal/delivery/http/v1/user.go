@@ -16,7 +16,7 @@ func (h *Handler) initUserRoutes(api *gin.RouterGroup) {
 		user.POST("/sign-in", h.userSignIn)
 		authorized := user.Group("", h.userIdentity)
 		{
-			authorized.PUT("", h.userUpdateName)
+			authorized.PATCH("", h.userUpdateName)
 			authorized.GET("", h.userGet)
 		}
 	}
