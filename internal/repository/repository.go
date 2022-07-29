@@ -3,7 +3,6 @@ package repository
 import (
 	"context"
 	"github.com/nekruzrabiev/simple-app/internal/domain"
-	"github.com/nekruzrabiev/simple-app/internal/service"
 	"time"
 )
 
@@ -40,7 +39,7 @@ type RefreshSession interface {
 
 type User interface {
 	Create(ctx context.Context, user domain.User) (int, error)
-	UpdateName(ctx context.Context, input service.UserUpdateInput) error
+	UpdateName(ctx context.Context, id int, name string) error
 	Get(ctx context.Context, userId int) (*domain.User, error)
 	Contains(ctx context.Context, email string) (bool, error)
 	GetByEmail(ctx context.Context, email string) (*domain.User, error)

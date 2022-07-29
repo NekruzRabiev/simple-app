@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"github.com/nekruzrabiev/simple-app/internal/domain"
-	"github.com/nekruzrabiev/simple-app/internal/service"
 )
 
 type userPostgres struct {
@@ -37,9 +36,9 @@ const updateUserFullNameSql = `
 		id = $2;
 `
 
-func (r *userPostgres) UpdateName(ctx context.Context, input service.UserUpdateInput) error {
+func (r *userPostgres) UpdateName(ctx context.Context, id int, name string) error {
 	query := fmt.Sprintf(updateUserFullNameSql, userTable)
-	_, err := r.db.ExecContext(ctx, query, input.Name, input.Id)
+	_, err := r.db.ExecContext(ctx, query, name, id)
 	return err
 }
 

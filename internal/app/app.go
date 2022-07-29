@@ -3,6 +3,7 @@ package app
 import (
 	"context"
 	"errors"
+	_ "github.com/jackc/pgx/v4/stdlib"
 	"github.com/nekruzrabiev/simple-app/internal/config"
 	delivery "github.com/nekruzrabiev/simple-app/internal/delivery/http"
 	"github.com/nekruzrabiev/simple-app/internal/repository"

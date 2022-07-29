@@ -91,7 +91,7 @@ func (s *userService) SignIn(ctx context.Context, input UserSignInInput) (UserSi
 }
 
 func (s *userService) UpdateName(ctx context.Context, input UserUpdateInput) error {
-	return s.repo.UpdateName(ctx, input)
+	return s.repo.UpdateName(ctx, input.Id, input.Name)
 }
 
 func (s *userService) Get(ctx context.Context, id int) (*domain.User, error) {
