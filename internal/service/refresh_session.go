@@ -26,12 +26,14 @@ func newRefreshSessionService(repo repository.RefreshSession, jwtManager jwt.Tok
 		refreshTokenTTL: refreshTokenTTL}
 }
 
+// Create create pair of tokens
 func (s *refreshSessionService) Create(ctx context.Context, userId int) (Tokens, error) {
 	var (
 		res Tokens
 		err error
 	)
 
+	// generate new access token with a given TTL and user's ID
 	res.AccessToken, err = s.jwtManager.NewJWT(strconv.Itoa(userId), s.accessTokenTTL)
 	if err != nil {
 		return res, err
@@ -53,6 +55,7 @@ func (s *refreshSessionService) Create(ctx context.Context, userId int) (Tokens,
 	return res, err
 }
 
+// Update update access and refresh tokens
 func (s *refreshSessionService) Update(ctx context.Context, refreshToken string) (Tokens, error) {
 	refreshSession, err := s.repo.GetByToken(ctx, refreshToken, time.Now())
 	if err != nil {

@@ -211,6 +211,7 @@ func (h *Handler) userRefresh(c *gin.Context) {
 		newResponse(c, http.StatusBadRequest, ErrBadParams, err)
 		return
 	}
+
 	tokens, err := h.services.RefreshSession.Update(c.Request.Context(), req.RefreshToken)
 	if err != nil {
 		newResponse(c, http.StatusUnauthorized, ErrSession, err)

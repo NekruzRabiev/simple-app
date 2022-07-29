@@ -12,3 +12,4 @@ build:
 	docker-compose build simple-app
 run:
 	docker-compose up -d simple-app
+build_run: build run
