@@ -11,6 +11,7 @@ import (
 )
 
 //go:generate mockgen -source=service.go -destination=mocks/mock.go
+
 //ALL services
 type Services struct {
 	User           User
