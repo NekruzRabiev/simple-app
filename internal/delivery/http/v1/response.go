@@ -1,6 +1,7 @@
 package v1
 
 import (
+	"encoding/json"
 	"github.com/gin-gonic/gin"
 	"github.com/nekruzrabiev/simple-app/pkg/logger"
 	"net/http"
@@ -16,6 +17,11 @@ func newErrResponse(message string, code int) *errResponse {
 		Message: message,
 		Code:    code,
 	}
+}
+
+func (e *errResponse) marshalJSON() string {
+	b, _ := json.Marshal(e)
+	return string(b)
 }
 
 var (
