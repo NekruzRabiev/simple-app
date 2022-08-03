@@ -57,11 +57,6 @@ type UserSignInInput struct {
 	Password string
 }
 
-type UserGetInput struct {
-	Id   int
-	Name string
-}
-
 // User service
 type User interface {
 	Create(ctx context.Context, staff domain.User) (int, error)
