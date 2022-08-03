@@ -2,20 +2,22 @@ package repository
 
 import (
 	"context"
+	"github.com/DATA-DOG/go-sqlmock"
+	"github.com/jmoiron/sqlx"
 	"github.com/nekruzrabiev/simple-app/internal/domain"
 	"github.com/stretchr/testify/assert"
-	sqlmock "github.com/zhashkevych/go-sqlxmock"
 	"testing"
 )
 
 func TestUserPostgres_Create(t *testing.T) {
-	db, mock, err := sqlmock.Newx()
+	mockDB, mock, err := sqlmock.New()
 	if err != nil {
 		t.Fatalf("an error '%s' was not expected when opening a stub database connection", err)
 	}
-	defer db.Close()
+	defer mockDB.Close()
+	dbx := sqlx.NewDb(mockDB, "sqlmock")
 
-	r := newUserPostgres(&store{db})
+	r := newUserPostgres(&store{dbx})
 	tests := []struct {
 		name    string
 		mock    func()

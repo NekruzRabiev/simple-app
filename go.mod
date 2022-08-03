@@ -3,6 +3,7 @@ module github.com/nekruzrabiev/simple-app
 go 1.16
 
 require (
+	github.com/DATA-DOG/go-sqlmock v1.5.0 // indirect
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/gin-gonic/gin v1.8.1
 	github.com/go-openapi/spec v0.20.6 // indirect
